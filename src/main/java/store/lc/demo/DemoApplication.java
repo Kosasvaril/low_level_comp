@@ -25,48 +25,48 @@ public class DemoApplication {
 
 		Regions clientRegion = Regions.US_EAST_2;
 		String bucketName = "kls3";
-		String sourceKey = "TestFile.txt";
-		String destinationKey = "TestFile.txt";
+		String sourceKey = "TestFile2.txt";
+		String destinationKey = "TestFile2.txt";
 
 		final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(clientRegion).build();
-//
-//		try {
-//			s3.putObject(bucketName, destinationKey, new File(sourceKey));
-//		} catch (AmazonServiceException e) {
-//			System.err.println(e.getErrorMessage());
-//			System.exit(1);
-//		}
 
-        ListObjectsV2Result result = s3.listObjectsV2(bucketName);
-        List<S3ObjectSummary> objects = result.getObjectSummaries();
-        for (S3ObjectSummary os : objects) {
-			File f = new File(os.getKey());
-			if(f.exists()) {
-				System.out.println("OKAY!");
-			}else {
-				try {
-					System.out.println("I'M MISSING!");
-					S3Object o = s3.getObject(bucketName, sourceKey);
-					S3ObjectInputStream s3is = o.getObjectContent();
-					FileOutputStream fos = new FileOutputStream(new File(sourceKey));
-					byte[] read_buf = new byte[1024];
-					int read_len = 0;
-					while ((read_len = s3is.read(read_buf)) > 0) {
-						fos.write(read_buf, 0, read_len);
-					}
-					s3is.close();
-					fos.close();
-				} catch (AmazonServiceException e) {
-					System.err.println(e.getErrorMessage());
-					System.exit(1);
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-					System.exit(1);
-				}
-			}
-        }
+		try {
+			s3.putObject(bucketName, destinationKey, new File(sourceKey));
+		} catch (AmazonServiceException e) {
+			System.err.println(e.getErrorMessage());
+			System.exit(1);
+		}
 
-
+        //ListObjectsV2Result result = s3.listObjectsV2(bucketName);
+        //List<S3ObjectSummary> objects = result.getObjectSummaries();
+        //for (S3ObjectSummary os : objects) {
+		//	File f = new File(os.getKey());
+		//	if(f.exists()) {
+		//		System.out.println("OKAY!");
+		//	}else {
+		//		S3Object o = s3.getObject(bucketName, sourceKey);
+		//		S3ObjectInputStream s3is = o.getObjectContent();
+		//		FileOutputStream fos = new FileOutputStream(sourceKey);
+		//		try {
+		//			System.out.println("I'M MISSING!");
+		//			byte[] read_buf = new byte[1024];
+		//			int read_len = 0;
+		//			while ((read_len = s3is.read(read_buf)) > 0) {
+		//				fos.write(read_buf, 0, read_len);
+		//			}
+		//		} catch (AmazonServiceException e) {
+		//			System.err.println(e.getErrorMessage());
+		//			System.exit(1);
+		//		} catch (IOException e) {
+		//			System.err.println(e.getMessage());
+		//			System.exit(1);
+		//		}
+		//		finally {
+		//			s3is.close();
+		//			fos.close();
+		//		}
+		//	}
+        //}
 	}
 
 }
